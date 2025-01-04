@@ -1,0 +1,98 @@
+Working on how this could work on rstudio
+Below is information discovered thus far.
+This has not yet been successful in testing.
+
+#originally expected this to work.
+install.packages('tidyverse','mctoolsr','knitr','xlsx','BiodiversityR','phyloseq','ggplot2', dependencies=TRUE)
+
+install.packages('BiodiversityR','phyloseq', dependencies=TRUE)
+
+
+#Troubleshooting destdir missing issues
+#https://stackoverflow.com/questions/29219724/argument-destdir-is-missing-with-no-default
+#.libPaths(new = "/home/someuser/R/library")
+
+### BiocManager helps with packages and dependencies let's try leaning on this a little?
+
+## Troubleshooting biocmanager issues with R version and library versions
+#blocmanager has to match R verison, R4.2.2 needs 3.16
+## Biocmanager install information: https://www.bioconductor.org/install/
+#BiocManager::install(version = "3.16")
+#BiocManager::install("DESeq2", version = "3.16")
+
+## maybe useful for phyloseq pkg?
+http://joey711.github.io/phyloseq/install.html
+
+
+## *Testing* SETUP NOW ####
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.16")
+
+BiocManager::install("FEAST", version = "3.16")
+BiocManager::install("phyloseq", version = "3.16")
+
+### *CHECK* ENV ####
+## Checking from 'R" the installed packages
+Method 1: Check if Particular Package is Installed
+#check if ggplot2 is installed
+system.file(package='ggplot2')
+
+#### check pkgs from outside 'r' using flight check? Does this 'see' rstudio environment?
+echo "Check FEAST software is installed."
+Rscript -e 'if ("FEAST" %in% installed.packages()) { print("FEAST is installed.") } else { print("FEAST is not installed.") }'
+Rscript -e 'if ("tidyverse" %in% installed.packages()) { print("tidyverse is installed.") } else { print(" tidyverse is not installed.") }'
+
+Rscript -e 'if ("mctoolsr" %in% installed.packages()) { print("mctoolsr is installed.") } else { print("mctoolsr is not installed.") }'
+
+Rscript -e 'if ("knitr" %in% installed.packages()) { print("knitr is installed.") } else { print(" knitr is not installed.") }'
+
+Rscript -e 'if ("xlsx" %in% installed.packages()) { print("xlsx is installed.") } else { print("xlsx is not installed.") }'
+
+Rscript -e 'if ("BiodiversityR" %in% installed.packages()) { print("BiodiversityR is installed.") } else { print("BiodiversityR is not installed.") }'
+
+Rscript -e 'if ("phyloseq" %in% installed.packages()) { print("phyloseq is installed.") } else { print("phyloseq is not installed.") }'
+
+Rscript -e 'if ("ggplot2" %in% installed.packages()) { print("ggplot2 is installed.") } else { print("ggplot2 is not installed.") }'
+
+
+########
+## SET THE WORKING DIRECTORY
+# The first thing we need to do is set our working directory - change $USER to your own account, in my case marinanc@colostate.edu
+setwd("/scratch/alpine/$USER")
+
+# Check that we are in the appropriate working directory
+getwd()
+# The console (bottom left panel) should show the following directory "/scratch/alpine/$USER"
+
+##Format to copy and paste into rstudio 'install' dialogue box###
+Rcpp,RcppArmadillo,vegan,dplyr,reshape2,gridExtra,ggplot2,ggthemes,devtools,tidyr,tibble,tidyverse,mctoolsr,knitr,xlsx,ggplot2
+install.packages("devtools")
+devtools::install_github("leffj/mctoolsr")
+
+## INSTALLING PACKAGES NEEDED TO RUN FEAST
+# Now that we're within the Scratch directory, we'll install and load all packages needed to run FEAST:
+# To do so, first we have to create an object with the different packages that FEAST requires:
+Packages <- c("Rcpp", "RcppArmadillo", "vegan", "dplyr", "reshape2", "gridExtra", "ggplot2", "ggthemes", "devtools", "tidyr", "tibble")
+# NOTE: after running this command, you will see that this list shows under your "Environment" panel (top right panel)
+
+
+# Install the packages. You will see a lot of red messages in the console (bottom left panel). 
+# Don't panic, that's totally normal! It just means that R is installing the packages needed
+# NOTE: this should take a few minutes
+install.packages(Packages)
+# Load the required packages we just installed
+lapply(Packages, library, character.only = TRUE)
+#Once done, the installed packages will show in the bottom right panel of the RScript interface, under the "Packages" tab, with a check mark
+
+## Install the FEAST package from GitHub (you can see all the info here: https://github.com/cozygene/FEAST?tab=readme-ov-file)
+# Note: this will take a few minutes!
+devtools::install_github("cozygene/FEAST", force=TRUE)
+# FEAST should now be listed under your installed packages (bottom right panel - Packages tab)
+
+# Load the FEAST package so it's ready to use!
+library(FEAST)
+
+
+Video:
+https://colostate.sharepoint.com/sites/Division_Research_Computing_and_Cyberinfrastructure-RC2-Staff/_layouts/15/stream.aspx?id=%2Fsites%2FDivision%5FResearch%5FComputing%5Fand%5FCyberinfrastructure%2DRC2%2DStaff%2FShared%20Documents%2FRC2%2DStaff%2F2023%2DRC2%2DPresentations%2FRstudio%5Fworkshop%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E423bcb23%2D3440%2D45a4%2Da02a%2Db53d5e97cbc2

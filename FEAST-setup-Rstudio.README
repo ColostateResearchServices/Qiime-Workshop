@@ -1,0 +1,15 @@
+
+#testing, not production!
+
+# currently working on using in r
+R
+
+Packages <- c("Rcpp", "RcppArmadillo", "vegan", "dplyr", "reshape2", "gridExtra", "ggplot2", "ggthemes")
+install.packages(Packages)
+lapply(Packages, library, character.only = TRUE)
+
+devtools::install_github("cozygene/FEAST")
+
+# currently working on using in rstudio
+### Source credit Nieto-Caballero,Marina <Marina.Nieto-Caballero@colostate.edu> ####
+setwd("/scratch/alpine)
